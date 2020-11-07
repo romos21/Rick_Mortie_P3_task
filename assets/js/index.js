@@ -1,33 +1,73 @@
-const getBtn = document.getElementById('get-characters');
-const result = document.getElementById('result-content');
-const inputName = document.getElementById('name');
-const pageNumber = document.getElementById('page-number');
-const showNextBtn = document.getElementById('show-next');
-const showPrevBtn = document.getElementById('show-prev');
+const getBtn = document.getElementById('get-characters'),
+    result = document.getElementById('result-content'),
+    inputName = document.getElementById('name'),
+    pageNumber = document.getElementById('page-number'),
+    showNextBtn = document.getElementById('show-next'),
+    showPrevBtn = document.getElementById('show-prev'),
+    statusSelect = document.getElementById('status'),
+    genderSelect = document.getElementById('gender'),
+    speciesSelect = document.getElementById('species');
 
+(async function selectInitialize(){
 
+    let response=await fetch('https://rickandmortyapi.com/api/character');
+    let result=await response.json();
+    const arrayToInit=result.results;
+    console.log(result);
+    while(result.info.next){
+        console.log(result);
+        response=await fetch(result.info.next);
+        result=await response.json();
+        result.results.forEach(el=>arrayToInit.push(el));
+    }
+    let genderValues=[];
+    let speciesValues=[];
+    let statusValues=[];
+    arrayToInit.forEach(el=>{
+        if(!genderValues.includes(el.gender)){
+            genderValues.push(el.gender);
+        }
+        if(!speciesValues.includes(el.species)){
+            speciesValues.push(el.species);
+        }
+        if(!statusValues.includes(el.status)){
+            statusValues.push(el.status);
+        }
+    })
+    console.log(statusValues,speciesValues,genderValues);
+    optionElAdd(statusValues,statusSelect);
+    optionElAdd(speciesValues,speciesSelect);
+    optionElAdd(genderValues,genderSelect);
+}())
 
-async function getStatus(page = 1, name) {
+function optionElAdd(array,block){
+    array.forEach(el=>{
+        const root=document.createElement('option');
+        root.textContent=el;
+        block.appendChild(root);
+    })
+}
+
+async function getStatus(page = 1, name,status,species,gender) {
     let resultArr = [];
     result.innerHTML = ``;
-    console.log(page,name);
     try {
-        const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}&name=${name}`);
+        const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}&name=${name}&status=${status}&species=${species}&gender=${gender}`);
         const result = await response.json();
         result.results.forEach(el => resultArr.push(el));
 
         console.log(resultArr);
 
-        if(result.info.next){
-            showNextBtn.style.display='block';
-        }else{
-            showNextBtn.style.display='none';
+        if (result.info.next) {
+            showNextBtn.style.display = 'block';
+        } else {
+            showNextBtn.style.display = 'none';
         }
 
-        if(result.info.prev) {
-            showPrevBtn.style.display='block';
-        }else {
-            showPrevBtn.style.display='none';
+        if (result.info.prev) {
+            showPrevBtn.style.display = 'block';
+        } else {
+            showPrevBtn.style.display = 'none';
         }
     } catch (err) {
         result.textContent = 'NOT FOUND!';
@@ -49,20 +89,18 @@ async function getStatus(page = 1, name) {
 
         result.appendChild(root);
     })
-    /*pageNumber.textContent=page.toString();*/
     return '';
 }
 
 getBtn.onclick = () => {
     pageNumber.textContent = '0';
-    console.log(pageNumber.textContent);
-    return getStatus(++pageNumber.textContent, inputName.value);
+    return getStatus(++pageNumber.textContent, inputName.value,statusSelect.value,speciesSelect.value,genderSelect.value);
 };
 
 showNextBtn.onclick = () => {
-    return getStatus(++pageNumber.textContent, inputName.value);
+    return getStatus(++pageNumber.textContent, inputName.value,statusSelect.value,speciesSelect.value,genderSelect.value);
 }
 
 showPrevBtn.onclick = () => {
-    return getStatus(--pageNumber.textContent, inputName.value);
+    return getStatus(--pageNumber.textContent, inputName.value,statusSelect.value,speciesSelect.value,genderSelect.value);
 }
