@@ -6,79 +6,110 @@ const getBtn = document.getElementById('get-characters'),
     showPrevBtn = document.getElementById('show-prev'),
     statusSelect = document.getElementById('status'),
     genderSelect = document.getElementById('gender'),
-    speciesSelect = document.getElementById('species');
+    speciesSelect = document.getElementById('species'),
+    pagesCount = document.getElementById('page-count');
+loader = document.getElementById('loader');
 
-(async function selectInitialize(){
 
-    let response=await fetch('https://rickandmortyapi.com/api/character');
-    let result=await response.json();
-    const arrayToInit=result.results;
-    console.log(result);
-    while(result.info.next){
-        console.log(result);
-        response=await fetch(result.info.next);
-        result=await response.json();
-        result.results.forEach(el=>arrayToInit.push(el));
+(async function () {
+    try {
+        let arrayToInit = [],
+            response = await fetch('https://rickandmortyapi.com/api/character'),
+            result = await response.json();
+        arrayToInit = result.results;
+        while (result.info.next) {
+            response = await fetch(result.info.next);
+            result = await response.json();
+            result.results.forEach(el => arrayToInit.push(el));
+        }
+        return arrayToInit
+    } catch (err) {
+        console.log(err + ' caught');
     }
-    let genderValues=[];
-    let speciesValues=[];
-    let statusValues=[];
-    arrayToInit.forEach(el=>{
-        if(!genderValues.includes(el.gender)){
+}()).then((arrayToInit) => initializeSelectOptions(arrayToInit));
+
+function initializeSelectOptions(arr) {
+    let genderValues = [],
+        speciesValues = [],
+        statusValues = [];
+    arr.forEach(el => {
+        if (!genderValues.includes(el.gender)) {
             genderValues.push(el.gender);
         }
-        if(!speciesValues.includes(el.species)){
+        if (!speciesValues.includes(el.species)) {
             speciesValues.push(el.species);
         }
-        if(!statusValues.includes(el.status)){
+        if (!statusValues.includes(el.status)) {
             statusValues.push(el.status);
         }
     })
-    console.log(statusValues,speciesValues,genderValues);
-    optionElAdd(statusValues,statusSelect);
-    optionElAdd(speciesValues,speciesSelect);
-    optionElAdd(genderValues,genderSelect);
-}())
 
-function optionElAdd(array,block){
-    array.forEach(el=>{
-        const root=document.createElement('option');
-        root.textContent=el;
+    optionElAdd(statusValues, statusSelect);
+    optionElAdd(speciesValues, speciesSelect);
+    optionElAdd(genderValues, genderSelect);
+};
+
+function optionElAdd(array, block) {
+    array.forEach(el => {
+        const root = document.createElement('option');
+        root.textContent = el;
         block.appendChild(root);
     })
 }
 
-async function getStatus(page = 1, name,status,species,gender) {
-    let resultArr = [];
+function notSpecifiedCheck(selectOption) {
+    return selectOption === 'Not specified' ? '' : selectOption;
+}
+
+async function getStatus(page = 1, name, status, species, gender) {
+    status = notSpecifiedCheck(status);
+    species = notSpecifiedCheck(species);
+    gender = notSpecifiedCheck(gender);
     result.innerHTML = ``;
-    try {
-        const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}&name=${name}&status=${status}&species=${species}&gender=${gender}`);
-        const result = await response.json();
-        result.results.forEach(el => resultArr.push(el));
+    const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}&name=${name}&status=${status}&species=${species}&gender=${gender}`);
+    const resultRes = await response.json();
+    return resultRes;
+}
 
-        console.log(resultArr);
-
-        if (result.info.next) {
-            showNextBtn.style.display = 'block';
-        } else {
-            showNextBtn.style.display = 'none';
-        }
-
-        if (result.info.prev) {
-            showPrevBtn.style.display = 'block';
-        } else {
+function searchListener() {
+    loader.style.display='block';
+    getStatus(pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value)
+        .then(resultRes => {
+            addCharactersCards(resultRes);
+        })
+        .catch(err => {
+            result.textContent = 'NOT FOUND!';
+            pagesCount.textContent = '';
+            result.style.color = '#fff';
             showPrevBtn.style.display = 'none';
-        }
-    } catch (err) {
-        result.textContent = 'NOT FOUND!';
-        result.style.color = '#fff';
-        return '';
+            showNextBtn.style.display = 'none';
+            console.log(err + ' caught');
+        })
+        .finally(()=>{
+            loader.style.display='none';
+        })
+}
+
+const addCharactersCards = (resultRes) => {
+    let resultArr = [];
+    pagesCount.textContent = 'of ' + resultRes.info.pages;
+    if (resultRes.info.next) {
+        showNextBtn.style.display = 'block';
+    } else {
+        showNextBtn.style.display = 'none';
     }
+
+    if (resultRes.info.prev) {
+        showPrevBtn.style.display = 'block';
+    } else {
+        showPrevBtn.style.display = 'none';
+    }
+    resultRes.results.forEach(el => resultArr.push(el));
     resultArr.forEach(el => {
         const root = document.createElement('div');
         root.className = "result-element";
         root.innerHTML = `
-            <img src="${el.image}">
+            <img alt="${el.name} ${el.status} ${el.species} ${el.gender}" src="${el.image}">
             <div>
                 <div>${el.name}</div>
                 <div>${el.status}</div>
@@ -89,18 +120,33 @@ async function getStatus(page = 1, name,status,species,gender) {
 
         result.appendChild(root);
     })
-    return '';
+    console.log(resultArr);
+}
+
+const enterPress = event => {
+    if (event.key === 'Enter') {
+        pageNumber.textContent = '1';
+        return getStatus(pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value);
+    }
+}
+
+inputName.onfocus = () => {
+    window.addEventListener('keydown', enterPress);
+}
+
+inputName.onblur = () => {
+    window.removeEventListener('keydown', enterPress);
 }
 
 getBtn.onclick = () => {
-    pageNumber.textContent = '0';
-    return getStatus(++pageNumber.textContent, inputName.value,statusSelect.value,speciesSelect.value,genderSelect.value);
+    pageNumber.textContent = '1';
+    searchListener();
 };
 
 showNextBtn.onclick = () => {
-    return getStatus(++pageNumber.textContent, inputName.value,statusSelect.value,speciesSelect.value,genderSelect.value);
+    searchListener();
 }
 
 showPrevBtn.onclick = () => {
-    return getStatus(--pageNumber.textContent, inputName.value,statusSelect.value,speciesSelect.value,genderSelect.value);
+    searchListener();
 }

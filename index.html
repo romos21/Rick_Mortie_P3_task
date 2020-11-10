@@ -8,31 +8,42 @@
 <body>
 
 <section class="response-sec">
-    <div class="find-block">
-        <span>name:</span>
-        <input type="text" id="name"/>
-        <button id="get-characters">GET!</button>
+    <div class="loading-block" id="loader">
+        <div class="loading-block-element">
+            <img class="loading-block-image"
+                 alt="Rick&Morty Loader"
+                 src="https://recxon.pro/upload/medialibrary/818/8187a44741ec1bc337686b53ce22cc10.gif"
+            />
+        </div>
     </div>
     <div class="find-block">
-        <select id="status">
-            <option></option>
+        <span>name:</span>
+        <input class="input-name" type="text" id="name"/>
+        <button class="find-button" id="get-characters">GET!</button>
+    </div>
+    <div class="find-block">
+        <select class="select-property" id="status">
+            <option>Not specified</option>
         </select>
-        <select id="species">
-            <option></option>
+        <select class="select-property" id="species">
+            <option>Not specified</option>
         </select>
-        <select id="gender">
-            <option></option>
+        <select class="select-property" id="gender">
+            <option>Not specified</option>
         </select>
     </div>
     <div class="result" id="result">
         <div class="page-state-block">
             <span>page</span>
-            <span id="page-number">0</span>
+            <span>
+                <span id="page-number">0</span>
+                <span id="page-count"></span>
+            </span>
         </div>
         <div id="result-content"></div>
         <div class="page-display">
-            <button class='show-more' id="show-prev">prev</button>
-            <button class='show-more' id="show-next">next</button>
+            <button class='find-button show-more' id="show-prev">prev</button>
+            <button class='find-button show-more' id="show-next">next</button>
         </div>
     </div>
 </section>

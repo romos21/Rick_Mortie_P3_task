@@ -2,9 +2,38 @@ body{
     background-image: url("http://wallpapershdnow.com/images/tv-shows/animation/rick-and-morty/rick-and-morty-background-43.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    color: white;
+    font-size: 40px;
 }
 
-button,select{
+.loading-block,.loading-block-element{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.loading-block{
+    background-color: rgba(0,0,0,.8);
+    display: none;
+    text-align: center;
+    z-index: 2;
+}
+
+.loading-block-element{
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-block-image{
+    width: 400px;
+    height: 300px;
+}
+
+.find-button,.select-property{
     background-color: #000;
     border: 5px solid #fff;
     border-radius: 0.8em;
@@ -13,8 +42,10 @@ button,select{
     font-size: 40px;
 }
 
-select{
+.select-property{
     width: 30%;
+    font-size: 20px;
+    padding: 20px;
 }
 
 .find-block{
@@ -24,12 +55,7 @@ select{
     margin: 20px 0;
 }
 
-span{
-    color: white;
-    font-size: 40px;
-}
-
-input{
+.input-name{
     background-color: #fff;
     color: #000;
     border-radius: 20px;
