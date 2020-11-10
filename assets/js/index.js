@@ -77,9 +77,9 @@ async function getStatus(page = 1, name, status, species, gender) {
     return resultRes;
 }
 
-function searchListener() {
+function searchListener(pageAttr) {
     loader.style.display='block';
-    getStatus(++pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value)
+    getStatus(pageAttr, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value)
         .then(resultRes => {
             addCharactersCards(resultRes);
         })
@@ -149,14 +149,14 @@ inputName.onblur = () => {
 }
 
 getBtn.onclick = () => {
-    pageNumber.textContent = '0';
-    searchListener();
+    pageNumber.textContent = '1';
+    searchListener(pageNumber.textContent);
 };
 
 showNextBtn.onclick = () => {
-    searchListener();
+    searchListener(++pageNumber.textContent);
 }
 
 showPrevBtn.onclick = () => {
-    searchListener();
+    searchListener(--pageNumber.textContent);
 }
