@@ -14,8 +14,11 @@ loader = document.getElementById('loader');
 (async function () {
     try {
         let arrayToInit = [],
-            response = await fetch('https://rickandmortyapi.com/api/character'),
-            result = await response.json();
+            response = await fetch('https://rickandmortyapi.com/api/character');
+            if(!response.ok){
+                throw new Error('Not find');
+            }
+            let result = await response.json();
         arrayToInit = result.results;
         while (result.info.next) {
             response = await fetch(result.info.next);
@@ -67,13 +70,16 @@ async function getStatus(page = 1, name, status, species, gender) {
     gender = notSpecifiedCheck(gender);
     result.innerHTML = ``;
     const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}&name=${name}&status=${status}&species=${species}&gender=${gender}`);
+    if(!response.ok){
+        throw new Error('Not find');
+    }
     const resultRes = await response.json();
     return resultRes;
 }
 
 function searchListener() {
     loader.style.display='block';
-    getStatus(pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value)
+    getStatus(++pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value)
         .then(resultRes => {
             addCharactersCards(resultRes);
         })
@@ -125,8 +131,12 @@ const addCharactersCards = (resultRes) => {
 
 const enterPress = event => {
     if (event.key === 'Enter') {
-        pageNumber.textContent = '1';
+        pageNumber.textContent = '0';
+        searchListener();
+       /* pageNumber.textContent = '1';
         return getStatus(pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value);
+   */
+
     }
 }
 
@@ -139,7 +149,7 @@ inputName.onblur = () => {
 }
 
 getBtn.onclick = () => {
-    pageNumber.textContent = '1';
+    pageNumber.textContent = '0';
     searchListener();
 };
 
