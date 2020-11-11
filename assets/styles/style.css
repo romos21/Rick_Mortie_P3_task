@@ -6,7 +6,6 @@ body{
     font-size: 40px;
 }
 
-
 .submit-form{
     text-align: center;
 }
@@ -47,8 +46,13 @@ body{
     font-size: 40px;
 }
 
+.label-for-select{
+    padding: 0 10px;
+    text-align: center;
+}
+
 .select-property{
-    width: 30%;
+    width: 50%;
     font-size: 20px;
     padding: 20px;
     margin: 20px 0;
