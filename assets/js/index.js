@@ -8,7 +8,8 @@ const getBtn = document.getElementById('get-characters'),
     genderSelect = document.getElementById('gender'),
     speciesSelect = document.getElementById('species'),
     pagesCount = document.getElementById('page-count');
-loader = document.getElementById('loader');
+    loader = document.getElementById('loader');
+    submitForm=document.getElementById('submit-form');
 
 
 (async function () {
@@ -129,29 +130,12 @@ const addCharactersCards = (resultRes) => {
     console.log(resultArr);
 }
 
-const enterPress = event => {
-    if (event.key === 'Enter') {
-        pageNumber.textContent = '0';
-        searchListener();
-       /* pageNumber.textContent = '1';
-        return getStatus(pageNumber.textContent, inputName.value, statusSelect.value, speciesSelect.value, genderSelect.value);
-   */
 
-    }
-}
-
-inputName.onfocus = () => {
-    window.addEventListener('keydown', enterPress);
-}
-
-inputName.onblur = () => {
-    window.removeEventListener('keydown', enterPress);
-}
-
-getBtn.onclick = () => {
+submitForm.onsubmit=(event)=>{
+    event.preventDefault();
     pageNumber.textContent = '1';
     searchListener(pageNumber.textContent);
-};
+}
 
 showNextBtn.onclick = () => {
     searchListener(++pageNumber.textContent);

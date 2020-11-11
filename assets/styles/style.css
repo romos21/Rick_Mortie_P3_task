@@ -6,6 +6,11 @@ body{
     font-size: 40px;
 }
 
+
+.submit-form{
+    text-align: center;
+}
+
 .loading-block,.loading-block-element{
     position: absolute;
     top:0;
@@ -46,12 +51,6 @@ body{
     width: 30%;
     font-size: 20px;
     padding: 20px;
-}
-
-.find-block{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin: 20px 0;
 }
 

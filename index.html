@@ -16,12 +16,10 @@
             />
         </div>
     </div>
-    <div class="find-block">
-        <span>name:</span>
-        <input class="input-name" type="text" id="name"/>
-        <button class="find-button" id="get-characters">GET!</button>
-    </div>
-    <div class="find-block">
+    <form class="submit-form" id="submit-form">
+        <label for="name">name:</label>
+        <input autofocus class="input-name" type="text" id="name"/>
+        <button type="submit" class="find-button" id="get-characters">GET!</button>
         <select class="select-property" id="status">
             <option>Not specified</option>
         </select>
@@ -31,7 +29,7 @@
         <select class="select-property" id="gender">
             <option>Not specified</option>
         </select>
-    </div>
+    </form>
     <div class="result" id="result">
         <div class="page-state-block">
             <span>page</span>
