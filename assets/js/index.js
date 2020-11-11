@@ -85,7 +85,12 @@ function searchListener(pageAttr) {
             addCharactersCards(resultRes);
         })
         .catch(err => {
-            result.textContent = 'NOT FOUND!';
+            result.innerHTML=
+                `<div class="not-found-block">
+                    <img class="not-found-img" src="https://avatanplus.com/files/resources/original/574c38ddcaad315501be2286.png"/>
+                    <br/>
+                    <span>not found!!!</span>
+                </div>`;
             pagesCount.textContent = '';
             result.style.color = '#fff';
             showPrevBtn.style.display = 'none';
@@ -118,10 +123,10 @@ const addCharactersCards = (resultRes) => {
         root.innerHTML = `
             <img alt="${el.name} ${el.status} ${el.species} ${el.gender}" src="${el.image}">
             <div>
-                <div>${el.name}</div>
-                <div>${el.status}</div>
-                <div>${el.species}</div>
-                <div>${el.gender}</div>
+                <div><span>Name: </span><span>${el.name}</span></div>
+                <div><span>Status: </span><span>${el.status}</span></div>
+                <div><span>Species: </span><span>${el.species}</span></div>
+                <div><span>Gender: </span><span>${el.gender}</span></div>
             </div>
         `;
 

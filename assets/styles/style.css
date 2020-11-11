@@ -64,6 +64,7 @@ body{
     font-size: 40px;
 }
 
+
 .response-sec{
     background-color: rgba(0,0,0,0.7);
     max-width: 800px;
@@ -112,4 +113,22 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+
+.select-property:hover,.find-button:hover,.input-name:hover{
+    color: #4a058a;
+    background-color: #7273ae;
+    border-color: #cb5207;
+    transition: 1.2s;
+}
+
+.not-found-block{
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.not-found-img{
+    width: 450px;
+    height: 400px;
 }
