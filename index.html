@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rick&Morty</title>
+    <link rel="stylesheet" href="assets/styles/style.css"/>
+    <link rel="shortcut icon" href="https://pbs.twimg.com/media/DfvZwMoXUAAQ-BJ.png">
+</head>
+<body>
+
+<section class="response-sec">
+    <div class="loading-block" id="loader">
+        <div class="loading-block-element">
+            <img class="loading-block-image"
+                 alt="Rick&Morty Loader"
+                 src="https://recxon.pro/upload/medialibrary/818/8187a44741ec1bc337686b53ce22cc10.gif"
+            />
+        </div>
+    </div>
+    <form class="submit-form" id="submit-form">
+        <label for="name">Name:</label>
+        <input autofocus class="input-name" type="text" id="name"/>
+        <button type="submit" class="find-button" id="get-characters">GET!</button>
+        <br/>
+        <label class="label-for-select" for="status">Status</label>
+        <select class="select-property" id="status">
+            <option>Not specified</option>
+        </select>
+        <br/>
+        <label class="label-for-select" for="species">Species</label>
+        <select class="select-property" id="species">
+            <option>Not specified</option>
+        </select>
+        <br/>
+        <label class="label-for-select" for="gender">Gender</label>
+        <select class="select-property" id="gender">
+            <option>Not specified</option>
+        </select>
+    </form>
+    <div class="result" id="result">
+        <div class="page-state-block">
+            <span>page</span>
+            <span>
+                <span id="page-number">0</span>
+                <span id="page-count"></span>
+            </span>
+        </div>
+        <div id="result-content"></div>
+        <div class="page-display">
+            <button class='find-button show-more' id="show-prev">prev</button>
+            <button class='find-button show-more' id="show-next">next</button>
+        </div>
+    </div>
+</section>
+<script src="assets/js/index.js"></script>
+</body>
+</html>
